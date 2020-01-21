@@ -6,6 +6,7 @@ import os
 import random
 import datetime
 import requests
+import json
 
 sched = BlockingScheduler()
 package_dir = os.path.dirname(os.path.abspath(__file__))
@@ -108,10 +109,10 @@ def draw_lunch():
         with open('src/result.json', 'w') as file:
             json.dump(result, file)
         mydata = {
-            "text": result,
+            "text": str(result),
             "username": "random-selector"
         }
-        r = requests.post(os.environ.get('HOOKS'), data=mydata, headers='Content-Type: application/json')
+        r = requests.post(os.environ.get('HOOKS'), data=json.dumps(mydata), headers={'Content-Type': 'application/json'})
         return 'Drew result: {}\n'.format(result)
 
 @app.route('/draw', methods=['POST'])
@@ -137,10 +138,10 @@ def force_draw():
             json.dump(result, file)
         
         mydata = {
-            "text": result,
+            "text": str(result),
             "username": "random-selector"
         }
-        r = requests.post(os.environ.get('HOOKS'), data=mydata, headers='Content-Type: application/json')
+        r = requests.post(os.environ.get('HOOKS'), data=json.dumps(mydata), headers={'Content-Type': 'application/json'})
         return 'Drew result: {}\n'.format(result)
      
 
